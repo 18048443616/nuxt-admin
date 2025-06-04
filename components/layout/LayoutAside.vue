@@ -8,8 +8,8 @@
     </div>
     <div class="menu-container">
       <el-menu :default-active="active" :collapse="collapse" background-color="#fff" text-color="#333"
-        active-text-color="#409EFF">
-        <el-menu-item v-for="item in menuItems" :key="item.index" :index="item.index">
+        active-text-color="#409EFF" @select="handleSelect">
+        <el-menu-item v-for="item in menuItems" :key="item.id" :index="item.path">
           <el-icon>
             <component :is="item.icon" />
           </el-icon>
@@ -31,25 +31,20 @@ import {
   Goods,
   ChatDotRound
 } from '@element-plus/icons-vue'
-
-const menuItems = [
-  { index: '1', title: '仪表盘', icon: HomeFilled },
-  { index: '2', title: '工作台', icon: Operation },
-  { index: '3', title: '系统管理', icon: Setting },
-  { index: '4', title: '文档中心', icon: Document },
-  { index: '5', title: '用户管理', icon: User },
-  { index: '6', title: '数据分析', icon: DataLine },
-  { index: '7', title: '商品管理', icon: Goods },
-  { index: '8', title: '消息中心', icon: ChatDotRound }
-]
+import { useMenuStore } from '~/stores/menu'
+import { computed } from 'vue'
 
 defineProps({
-  collapse: Boolean,
-  active: {
-    type: String,
-    default: '1'
-  }
+  collapse: Boolean
 })
+
+const menuStore = useMenuStore()
+const menuItems = computed(() => menuStore.menus.filter(item => item.isShow))
+
+const active = ref()
+const handleSelect = (key) => {
+  navigateTo({path: key})
+}
 </script>
 
 <style lang="scss" scoped>

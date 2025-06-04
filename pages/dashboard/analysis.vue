@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NuxtPage />
+    分析台
   </div>
 </template>
 

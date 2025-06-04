@@ -1,7 +1,7 @@
 <template>
   <div class="error-page">
-    <h1>403</h1>
-    <p>抱歉，您没有权限访问此页面</p>
+    <h1>404</h1>
+    <p>抱歉，没有该页面文件</p>
     <NuxtLink to="/">返回首页</NuxtLink>
   </div>
 </template>

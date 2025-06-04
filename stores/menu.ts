@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useMenuStore = defineStore('menu', {
   state: () => ({
+    menus: [] as object[],
     permissions: [] as string[],
     loading: false
   }),
@@ -13,6 +14,7 @@ export const useMenuStore = defineStore('menu', {
         const { data } = await useFetch('/api/menu')
         if (data.value?.code === 200) {
           // 直接存储路径作为权限列表
+          this.menus = data.value.data
           this.permissions = data.value.data.map(item => item.path)
         }
       } catch (error) {
