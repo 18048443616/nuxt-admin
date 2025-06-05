@@ -8,43 +8,55 @@
     </div>
     <div class="menu-container">
       <el-menu :default-active="active" :collapse="collapse" background-color="#fff" text-color="#333"
-        active-text-color="#409EFF" @select="handleSelect">
-        <el-menu-item v-for="item in menuItems" :key="item.id" :index="item.path">
-          <el-icon>
-            <component :is="item.icon" />
-          </el-icon>
-          <span class="menu-title">{{ item.title }}</span>
-        </el-menu-item>
+        active-text-color="#409EFF" @select="handleSelect" :unique-opened="true" :collapse-transition="false">
+        <template v-for="item in menuItems" :key="item.id">
+          <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.path">
+            <template #title>
+              <i class="iconfont" :class="item.icon"></i>
+              <span class="menu-title">{{ item.title }}</span>
+            </template>
+            <el-menu-item v-for="child in item.children" :key="child.id" :index="child.path" :disabled="child.disabled">
+              <i class="iconfont" :class="child.icon"></i>
+              <span class="menu-title">{{ child.title }}</span>
+            </el-menu-item>
+          </el-sub-menu>
+          <el-menu-item v-else :index="item.path" :disabled="item.disabled">
+            <i class="iconfont" :class="item.icon"></i>
+            <span class="menu-title">{{ item.title }}</span>
+          </el-menu-item>
+        </template>
       </el-menu>
     </div>
   </div>
 </template>
 
 <script setup>
-import {
-  HomeFilled,
-  Operation,
-  Setting,
-  Document,
-  User,
-  DataLine,
-  Goods,
-  ChatDotRound
-} from '@element-plus/icons-vue'
 import { useMenuStore } from '~/stores/menu'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 defineProps({
   collapse: Boolean
 })
 
+const route = useRoute()
 const menuStore = useMenuStore()
-const menuItems = computed(() => menuStore.menus.filter(item => item.isShow))
+const menuItems = computed(() => menuStore.menuTree)
+console.log(menuItems.value, 6666)
 
-const active = ref()
+const active = ref(route.path)
 const handleSelect = (key) => {
-  navigateTo({path: key})
+  navigateTo({ path: key })
 }
+
+// 监听路由变化更新激活菜单
+watch(
+  () => route.path,
+  (newPath) => {
+    active.value = newPath
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -112,18 +124,15 @@ const handleSelect = (key) => {
     &::-webkit-scrollbar-track {
       background: #f5f5f5;
     }
-  }
 
-  .el-menu {
-    border-right: none;
+    :deep(.el-menu) {
+      border-right: none;
 
-    :deep(.el-menu-item) {
-      display: flex;
-      align-items: center;
-
-      .el-icon {
-        margin-right: 8px;
-        font-size: 18px;
+      .el-menu-item, .el-sub-menu__title {
+        i {
+          margin-right: 8px;
+          font-size: 18px;
+        }
       }
     }
   }

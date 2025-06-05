@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
   // 模拟从数据库获取菜单数据（扁平结构）
   const menus = [
     {
-      id: 999,
+      id: 0,
       path: '/',
       title: '首页',
       type: 2,
@@ -13,22 +13,25 @@ export default defineEventHandler(async (event) => {
       path: '/dashboard',
       title: '仪表盘',
       type: 1,
-      icon: 'HomeFilled',
-      isShow: true
+      icon: 'icon-yuanbao',
+      isShow: true,
+      pid:  1
     },
     {
       id: 2,
       path: '/dashboard/console',
       title: '控制台',
       type: 2,
-      isShow: true
+      isShow: true,
+      pid:  1
     },
     {
       id: 3,
       path: '/dashboard/analysis',
       title: '分析页',
       type: 2,
-      isShow: true
+      isShow: true,
+      pid:  1
     },
   ]
 

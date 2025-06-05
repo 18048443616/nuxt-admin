@@ -10,7 +10,16 @@ export default defineNuxtConfig({
       clientAvailable: 'client-value'
     }
   },
-  css: ['~/assets/scss/common.scss'],
+  css: [
+    '~/assets/scss/common.scss'
+  ],
+  app: {
+    head: {
+      link: [
+        { rel: 'stylesheet', href: '//at.alicdn.com/t/c/font_3715494_u6awlnesny.css' }
+      ]
+    }
+  },
   modules: [
     '@element-plus/nuxt',
     '@pinia/nuxt'
